@@ -4,9 +4,11 @@ import br.com.guilhermeramos.crud_usuario.usuarios.domain.Usuario;
 import br.com.guilhermeramos.crud_usuario.usuarios.repositories.UsuarioRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UsuarioService {
 
     @Autowired

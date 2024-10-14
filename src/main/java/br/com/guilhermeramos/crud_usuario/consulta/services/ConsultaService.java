@@ -13,26 +13,25 @@ import java.util.Optional;
 
 @Service
 public class ConsultaService {
-
     @Autowired
     private ConsultaRepository consultaRepository;
 
-    public Consulta cadastrarConsulta(Consulta consulta) {
+    public Consulta cadastrarConsulta(Consulta consulta){
         consulta.setIdConsulta(null);
         return consultaRepository.save(consulta);
     }
 
-    public List<Consulta> listarConsultas() {
+    public List<Consulta> listarConsultas(){
         return consultaRepository.findAll();
     }
 
-    public Consulta buscarConsulta(Long id) {
+    public Consulta buscarConsulta(Long id){
         Optional<Consulta> consulta = consultaRepository.findById(id);
         return consulta.orElseThrow(
                 () -> new ObjectNotFoundException("Especialidade não encontrada! ID: ", id));
     }
 
-    public void deletarConsulta(Long id) throws ExceptionDataIntegrityViolation {
+    public void deletarConsulta(Long id){
         buscarConsulta(id);
         try {
             consultaRepository.deleteById(id);
@@ -41,15 +40,15 @@ public class ConsultaService {
         }
     }
 
-    public Consulta atualizarConsulta(Consulta consulta) {
+    public Consulta atualizarConsulta(Consulta consulta){
         Consulta novaConsulta = buscarConsulta(consulta.getIdConsulta());
         updateData(novaConsulta, consulta);
         return consultaRepository.save(novaConsulta);
     }
 
-    private void updateData(Consulta novaConsulta, Consulta consulta) {
-        novaConsulta.setDataConsulta(consulta.getDataConsulta);
-        novaConsulta.setProfissional(consulta.getProfissional);
-        novaConsulta.setEspecialidade(consulta.getEspecialidade);
+    private void updateData(Consulta novaConsulta, Consulta consulta){
+        novaConsulta.setDataConsulta(consulta.getDataConsulta());
+        novaConsulta.setProfissional(consulta.getProfissional());
+        novaConsulta.setEspecialidade(consulta.getEspecialidade());
     }
 }

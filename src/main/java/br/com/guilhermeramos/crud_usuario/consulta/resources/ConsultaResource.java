@@ -5,6 +5,7 @@ import br.com.guilhermeramos.crud_usuario.consulta.services.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ConsultaResource {
     @PostMapping
     public ResponseEntity<Consulta> cadastrarConsulta(@RequestBody Consulta consulta) {
         Consulta novaConsulta = consultaService.cadastrarConsulta(consulta);
-        URI uri = ServeletUriComponentsBuilder
+        URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(novaConsulta.getIdConsulta()).toUri();
         return ResponseEntity.created(uri).body(novaConsulta);
@@ -27,7 +28,7 @@ public class ConsultaResource {
 
     @GetMapping
     public ResponseEntity<List<Consulta>> listarConsultar(){
-        return ResponseEntity.ok().body(consultaService.listarConsultar());
+        return ResponseEntity.ok().body(consultaService.listarConsultas());
     }
 
     @GetMapping(value = "/{id}")

@@ -35,36 +35,4 @@ public class Consulta {
         this.especialidade = especialidade;
         this.usuario = usuario;
     }
-
-    public void setIdConsulta(Long idConsulta) {
-        this.idConsulta = idConsulta;
-    }
-
-    public Long getIdConsulta() {
-        return idConsulta;
-    }
-
-    public void setDataConsulta(String dataConsultaConsulta) {
-        this.dataConsulta = dataConsulta;
-    }
-
-    public String getDataConsulta() {
-        return dataConsulta;
-    }
-
-    public void setProfissional(String profissional) {
-        this.profissional = profissional;
-    }
-
-    public String getProfissional() {
-        return profissional;
-    }
-
-    public void setEspecialidade(String especialidade) {
-        this.especialidade = especialidade;
-    }
-
-    public String getEspecialidade() {
-        return especialidade;
-    }
 }
