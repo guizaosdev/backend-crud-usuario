@@ -68,11 +68,11 @@ public class SecurityConfig {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         auth.inMemoryAuthentication()
-                .withUser("JAIR").password(passwordEncoder.encode("12345")).roles("ADMIN")
+                .withUser("Guilherme").password(passwordEncoder.encode("12345")).roles("ADMIN")
                 .and()
-                .withUser("CALVIN").password(passwordEncoder.encode("98765")).roles("PACIENTE")
+                .withUser("Wesley").password(passwordEncoder.encode("98765")).roles("PACIENTE")
                 .and()
-                .withUser("Fernanda").password(passwordEncoder.encode("121212")).roles("SECRETARIO");
+                .withUser("Otávio").password(passwordEncoder.encode("121212")).roles("SECRETARIO");
 
     }
 
