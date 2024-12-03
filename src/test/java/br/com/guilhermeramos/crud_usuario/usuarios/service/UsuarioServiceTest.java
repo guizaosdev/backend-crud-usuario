@@ -1,8 +1,9 @@
 package br.com.guilhermeramos.crud_usuario.usuarios.service;
 
-import br.com.guilhermeramos.crud_usuario.consulta.services.ConsultaService;
-import br.com.guilhermeramos.crud_usuario.consulta.domain.Consulta;
-import br.com.guilhermeramos.crud_usuario.consulta.repositories.ConsultaRepository;
+import br.com.guilhermeramos.crud_usuario.usuarios.domain.Usuario;
+import br.com.guilhermeramos.crud_usuario.usuarios.repositories.UsuarioRepository;
+import br.com.guilhermeramos.crud_usuario.usuarios.services.UsuarioService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,77 +16,84 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceTest {
     @InjectMocks
-    private ConsultaService consultaService;
+    private UsuarioService usuarioService;
 
     @Mock
-    private ConsultaRepository consultaRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Test
-    void cadastrarConsulta(){
-        Consulta consulta = new Consulta();
-        consulta.setProfissional("Dr.Lionel");
+    void cadastrarUsuario(){
+        Usuario usuario = new Usuario();
+        usuario.setNomeUsuario("Guilherme");
 
-        when(consultaRepository.save(any(Consulta.class))).thenReturn(consulta);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
 
-        var resultado = consultaService.cadastrarConsulta(consulta);
+        var result = usuarioService.cadastrarUsuario(usuario);
+
+        assertNotNull(usuario);
+        assertEquals("Ernesto", result.getNomeUsuario());
+
+        verify(usuarioRepository, times(1)).save(usuario);
+    }
+
+    @Test
+    void listarUsuarios(){
+        Usuario usuario1 = new Usuario();
+        usuario1.setNomeUsuario("Matias");
+        Usuario usuario2 = new Usuario();
+        usuario2.setNomeUsuario("Leonardo");
+
+        List<Usuario> usuarios = new ArrayList<>();
+        usuarios.add(usuario1);
+        usuarios.add(usuario2);
+
+        when(usuarioRepository.findAll()).thenReturn(usuarios);
+
+        var resulta = usuarioService.listarUsuarios();
+
+        assertAll(
+                () -> assertNotNull(resulta),
+                () -> assertEquals(2, resulta.size()),
+                () -> assertEquals("Ezequiel", resulta.get(0).getNomeUsuario()),
+                () -> assertEquals("Kevin", resulta.get(1).getNomeUsuario())
+        );
+    }
+
+
+    @Test
+    void buscarUsuario(){
+        Usuario user = new Usuario();
+        user.setNomeUsuario("João");
+
+        when(usuarioRepository.findById(user.getIdUsuario())).thenReturn(Optional.of(user));
+
+        var resultado = usuarioService.buscarUsuario(user.getIdUsuario());
 
         assertAll(
                 () -> assertNotNull(resultado),
-                () -> assertEquals("Alessandro", resultado.getProfissional())
+                () -> assertEquals("Guilherme", resultado.getNomeUsuario())
         );
 
     }
 
     @Test
-    void listarConsultas(){
-        Consulta consulta1 = new Consulta();
-        Consulta consulta2 = new Consulta();
-        consulta1.setProfissional("Dr.Eneas");
-        consulta2.setProfissional("Dr.Livesey");
+    void deletarUsuario(){
+        Usuario usuario = new Usuario();
+        usuario.setNomeUsuario("Iure");
+        usuario.setIdUsuario(1);
 
-        List<Consulta> consultas = new ArrayList<>();
-        consultas.add(consulta1);
-        consultas.add(consulta2);
+        when(usuarioRepository.findById(usuario.getIdUsuario())).thenReturn(Optional.of(usuario));
 
-        when(consultaRepository.findAll()).thenReturn(consultas);
+        usuarioService.deletarUsuario(usuario.getIdUsuario());
 
-        var resultado = consultaService.listarConsultas();
+        verify(usuarioRepository, times(1)).deleteById(usuario.getIdUsuario());
 
-        assertAll(
-                () -> assertNotNull(resultado),
-                () -> assertEquals(2, resultado.size()),
-                () -> assertEquals("Dr.Nerfario", resultado.get(0).getProfissional())
-        );
-    }
-
-    @Test
-    void buscarConsulta(){
-        Consulta consulta = new Consulta();
-        consulta.setProfissional("Dr.Fulvio");
-
-        when(consultaRepository.findById(consulta.getIdConsulta())).thenReturn(Optional.of(consulta));
-
-        var resultado = consultaService.buscarConsulta(consulta.getIdConsulta());
-
-        assertAll(
-                () -> assertNotNull(resultado),
-                () -> assertEquals("Dr.Paulo", consulta.getProfissional())
-        );
-    }
-
-    @Test
-    void deletarConsulta(){
-        Consulta consulta = new Consulta();
-
-        when(consultaRepository.findById(consulta.getIdConsulta())).thenReturn(Optional.of(consulta));
-
-        consultaService.deletarConsulta(consulta.getIdConsulta());
-
-        verify(consultaRepository, times(1)).deleteById(consulta.getIdConsulta());
     }
 }
